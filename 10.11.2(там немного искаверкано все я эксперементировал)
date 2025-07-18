@@ -1,0 +1,50 @@
+#include <iostream>
+#include <iterator>
+
+int* find(int* firstIterator, int* lastInterator, int searchIntenger);
+
+int main()
+{
+    int arr[]{ 2, 5, 4, 10, 8, 20, 16, 40 };
+
+    std::cout << arr << '\n';
+
+    std::cout <<  arr + 5 << '\n';
+
+    std::cout << *arr << '\n';
+
+    std::cout << *(arr + 5) << '\n';
+
+    std::cout << "!!!!!!!!!!!!!" << (arr + 8) << '\n';
+    
+    int* found{ find(std::begin(arr), std::end(arr), 55) };
+
+    
+    if (found != std::end(arr))
+    {
+        std::cout << found << '\n';
+        std::cout << *found << '\n';
+    }
+
+    if (found == std::end(arr))
+    {
+
+        std::cout << std::end(arr) << '\n';
+       
+    }
+    
+
+    return 0;
+}
+
+int* find(int* firstIterator, int* lastIterator, int searchIntenger)
+{
+    for (int index{ 0 }; firstIterator + index != lastIterator;++index)
+    {
+        if (*(firstIterator + index) == searchIntenger)
+        {
+            return firstIterator + index;
+        }
+    }
+    return lastIterator;
+}
