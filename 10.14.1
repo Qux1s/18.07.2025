@@ -1,0 +1,60 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <limits>
+#include <cstddef> //для std::size_t
+
+int askAmountNames();
+std::string* createNames(std::string* namesEmployees, int sizeArray);
+void printNames(std::string* namesEmployees, int sizeArray);
+
+int main()
+{
+	int sizeArray{ askAmountNames() };
+
+	std::string* namesEmployees{ new std::string[static_cast<std::size_t>(sizeArray)] }; // Можно использовать и тип int главное чтобы компилятор не орал
+
+	std::sort(createNames(namesEmployees, sizeArray), namesEmployees + sizeArray);
+
+	printNames(namesEmployees, sizeArray);
+
+	delete[] namesEmployees;
+
+	return 0;
+
+}
+
+int askAmountNames()
+{
+	int amountNames{ 0 };
+
+	std::cout << "Enter amount first names what do you need." << '\n';
+
+	std::cin >> amountNames;
+
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+
+	return amountNames;
+}
+
+std::string* createNames(std::string* namesEmployees, int sizeArray)
+{
+	for (int index{ 0 };index < sizeArray; index++)
+	{
+		std::cout << "Enter name #" << index + 1 << ":" << '\n';
+
+		std::getline(std::cin, *(namesEmployees + index));
+	}
+
+	return namesEmployees;
+}
+
+void printNames(std::string* namesEmployees, int sizeArray)
+{
+	for (int index{ 0 }; index < sizeArray; index++)
+	{
+
+	std::cout << "Sorted name #" << index + 1 << ": " << *(namesEmployees + index) << '\n';
+
+	}
+}
