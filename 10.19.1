@@ -1,0 +1,31 @@
+#include <iostream>
+#include <string>
+#include <string_view>
+
+int main()
+{
+	std::string_view names [] ={ "Alex", "Betty", "Caroline", "Dave", "Emily", "Fred", "Holly"};
+
+	std::string userImputName{};
+
+	std::cout << "Enter your name." << '\n';
+	
+	std::cin >> userImputName;
+
+	bool found{ false };
+
+	for (std::string_view& currentName : names)
+	{
+		if (userImputName == currentName)
+		{
+	
+			found = true;
+
+		}
+	}
+	if(found)
+		std::cout << userImputName << " was found.";
+	else
+		std::cout << userImputName << " was not found.";
+	
+}
