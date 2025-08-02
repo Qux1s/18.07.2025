@@ -1,0 +1,368 @@
+#include <iostream> // я вроде что-то помню про то что он говорил что по количеству зедеров сразу поймет правильно решена задача или нет мб их должно быть 9 штук и типо я буду складывать стриги чтобы вызвать нужны перечислитель мол по названиям хедеров буду составлять число
+#include <string>   // я так понимаю что одино из свойств числа которые я должен показать это "реверсирование числа" тоесть процесс изменеия чисел на обратный
+#include "stringNumbersInArray.h"
+#include <locale>
+
+int userInputNumber();
+int digitCounter(int userNumber);
+void separateNumberToArray(int* array, int numberSymbol, int userNumber);
+void convertNumbersToString(int* array, int numberSymbol);
+void printWordInDeclination(int* array, const std::string& formOne, const std::string& formTwo, const std::string& formTree);
+bool isContinue();
+
+int main()
+{
+	//крч сенсей сказал в прогу можно сувать что угодно на корректную работу кирилицы т.к это не участвует в логике
+
+	//сказал я условно принимаю что в данные(введенные) в начале правильные, единственное что могу сделать сказал могу accert добавить и выбивать пользователя когда там не число мол я это хавать не буду
+
+	//int arrayNumbers[100] {};
+
+	//int arraySize{ std::size(arrayNumbers) };
+
+	//std::cout << arraySize;
+
+	std::locale::global(std::locale(""));        // Подключаем системную локаль
+	std::wcout.imbue(std::locale());
+	do
+	{
+	int userNumber{ userInputNumber() };
+
+	int numberSymbol{ digitCounter(userNumber)};
+
+	int* digitSeparately{ new int[numberSymbol] { } };//+работает проверил выводом чисел и кол-вом символов
+
+	separateNumberToArray(digitSeparately, numberSymbol, userNumber);
+
+	convertNumbersToString(digitSeparately, numberSymbol);
+
+	} while (isContinue());
+
+}
+
+int userInputNumber()
+{
+	int userNumber { 0 };
+
+	std::cout << "Please, imput your number." << '\n';
+
+	std::cin >> userNumber;
+
+	return userNumber;
+	
+}
+
+int digitCounter(int userNumber)//+протестировано возвращает корректное значение
+{
+	int countSymbol { 0 };
+	while (userNumber > 0)
+	{
+		userNumber /= 10;
+		countSymbol++;
+	}
+	return countSymbol;
+}
+
+void separateNumberToArray(int* array, int numberSymbol, int userNumber)//+проверил работает можно проверить еще раз
+{
+	for (int count{ 0 }; numberSymbol > count; count++)
+	{
+		*(array + count) = userNumber % 10;
+		userNumber /= 10;
+		//std::cout << *(array + count);
+	}
+}
+
+void convertNumbersToString(int* array, int numberSymbol)
+{
+
+	switch (numberSymbol)
+	{
+		case 1: //РАБОТАЕТ
+		{
+			if (*(array + 0) == 0)
+			{
+				std::wcout << "АААААААА ДЕНЬГИ УКРАЛИ!!!";
+					break;
+			}
+			std::wcout << unitOfOnes[*(array + 0)] << " ";
+			printWordInDeclination(array + 0, "рубль", "рубля", "рублей");
+			
+			break;
+		}
+		case 2: //РАБОТАЕТ
+		{
+			if (*(array + 1) == 1)
+			{
+				std::wcout << OnlyTens[*(array + 0)] << " рублей";
+			}
+			else
+			{
+				std::wcout << unitOfTens[*(array + 1)] << " " << unitOfOnes[*(array + 0)] << " ";
+				printWordInDeclination(array + 0, "рубль", "рубля", "рублей");
+			}
+			break;
+		}
+		case 3://РАБОТАЕТ
+		{
+			std::wcout << unitOfhundrends[*(array + 2)] << " ";
+			if (*(array + 1) == 1)
+			{
+				std::wcout << OnlyTens[*(array + 0)] << " рублей";
+			}
+			else
+			{
+				std::wcout << unitOfTens[*(array + 1)] << " " << unitOfOnes[*(array + 0)] << " ";
+				printWordInDeclination(array + 0, "рубль", "рубля", "рублей");
+			}
+			break;
+		case 4: //РАБОТАЕТ
+		{
+			std::wcout << unitOfOnesFemale[*(array + 3)] << " ";
+			printWordInDeclination(array + 3, "тысяча", "тысячи", "тысяч");
+			std::wcout << unitOfhundrends[*(array + 2)] << " ";
+			if (*(array + 1) == 1)
+			{
+				std::wcout << OnlyTens[*(array + 0)] << " рублей";
+			}
+			else
+			{
+				std::wcout << unitOfTens[*(array + 1)] << " " << unitOfOnes[*(array + 0)] << " ";
+				printWordInDeclination(array + 0, "рубль", "рубля", "рублей");
+			}
+			break;
+		}
+		case 5: //РАБОТАЕТ
+		{
+			if (*(array + 4) == 1)
+			{
+				std::wcout << OnlyTens[*(array + 3)] << " ";
+				std::wcout << "тысяч" << " ";
+			}
+			else
+			{
+				std::wcout << unitOfTens[*(array + 4)] << " ";
+
+				std::wcout << unitOfOnesFemale[*(array + 3)] << " ";//только тысячи исключение тут женский female
+
+				printWordInDeclination(array + 3, "тысяча", "тысячи", "тысяч");
+			}
+			std::wcout << unitOfhundrends[*(array + 2)] << " ";
+			if (*(array + 1) == 1)
+			{
+				std::wcout << OnlyTens[*(array + 0)] << " ";
+				std::wcout << "рублей" << " ";
+			}
+			else
+			{
+				std::wcout << unitOfTens[*(array + 1)] << " " << unitOfOnes[*(array + 0)] << " ";
+				printWordInDeclination(array, "рубль", "рубля", "рублей");
+			}
+			break;
+		}
+		}
+		case 6: //РАБОТАЕТ
+		{
+			std::wcout << unitOfhundrends[*(array + 5)] << " ";
+			if (*(array + 4) == 1)
+			{
+				std::wcout << OnlyTens[*(array + 3)] << " ";
+				std::wcout << "тысяч" << " ";
+			}
+			else
+			{
+				std::wcout << unitOfTens[*(array + 4)] << " "; 
+
+				std::wcout << unitOfOnesFemale[*(array + 3)] << " ";//только тысячи исключение тут женский female
+
+				printWordInDeclination(array + 3, "тысяча", "тысячи", "тысяч");
+			}
+			std::wcout << unitOfhundrends[*(array + 2)] << " ";
+			if (*(array + 1) == 1)
+			{
+				std::wcout << OnlyTens[*(array + 0)] << " ";
+				std::wcout << "рублей" << " ";
+			}
+			else
+			{
+				std::wcout << unitOfTens[*(array + 1)] << " " << unitOfOnes[*(array + 0)] << " ";
+				printWordInDeclination(array, "рубль", "рубля", "рублей");
+			}
+			break;
+		}
+		case 7:
+		{
+			std::wcout << unitOfOnes[*(array + 6)] << " ";
+			printWordInDeclination(array + 6, "миллион", "миллиона", "миллионов");
+			std::wcout << unitOfhundrends[*(array + 5)] << " ";
+			if (*(array + 4) == 1)
+			{
+				std::wcout << OnlyTens[*(array + 3)] << " ";
+				std::wcout << "тысяч" << " ";
+			}
+			else
+			{
+				std::wcout << unitOfTens[*(array + 4)] << " ";
+
+				std::wcout << unitOfOnesFemale[*(array + 3)] << " ";//только тысячи исключение тут женский female
+
+				printWordInDeclination(array + 3, "тысяча", "тысячи", "тысяч");
+			}
+			std::wcout << unitOfhundrends[*(array + 2)] << " ";
+			if (*(array + 1) == 1)
+			{
+				std::wcout << OnlyTens[*(array + 0)] << " ";
+				std::wcout << "рублей" << " ";
+			}
+			else
+			{
+				std::wcout << unitOfTens[*(array + 1)] << " " << unitOfOnes[*(array + 0)] << " ";
+				printWordInDeclination(array, "рубль", "рубля", "рублей");
+			}
+			break;
+		}
+		case 8:
+		{
+			if (*(array + 7) == 1)
+			{
+				std::wcout << OnlyTens[*(array + 6)] << " ";
+				std::wcout << "миллионов" << " ";
+			}
+			else
+			{
+				std::wcout << unitOfTens[*(array + 7)] << " ";
+
+				std::wcout << unitOfOnes[*(array + 6)] << " ";//только тысячи исключение тут женский female
+
+				printWordInDeclination(array + 6, "миллион", "миллиона", "миллионов");
+			}
+			std::wcout << unitOfhundrends[*(array + 5)] << " ";
+			if (*(array + 4) == 1)
+			{
+				std::wcout << OnlyTens[*(array + 3)] << " ";
+				std::wcout << "тысяч" << " ";
+			}
+			else
+			{
+				std::wcout << unitOfTens[*(array + 4)] << " ";
+
+				std::wcout << unitOfOnesFemale[*(array + 3)] << " ";//только тысячи исключение тут женский female
+
+				printWordInDeclination(array + 3, "тысяча", "тысячи", "тысяч");
+			}
+			std::wcout << unitOfhundrends[*(array + 2)] << " ";
+			if (*(array + 1) == 1)
+			{
+				std::wcout << OnlyTens[*(array + 0)] << " ";
+				std::wcout << "рублей" << " ";
+			}
+			else
+			{
+				std::wcout << unitOfTens[*(array + 1)] << " " << unitOfOnes[*(array + 0)] << " ";
+				printWordInDeclination(array, "рубль", "рубля", "рублей");
+			}
+			break;
+		}
+		case 9:
+		{
+			std::wcout << unitOfhundrends[*(array + 8)] << " ";
+			if (*(array + 7) == 1)
+			{
+				std::wcout << OnlyTens[*(array + 6)] << " ";
+				std::wcout << "миллионов" << " ";
+			}
+			else
+			{
+				std::wcout << unitOfTens[*(array + 7)] << " ";
+
+				std::wcout << unitOfOnes[*(array + 6)] << " ";//только тысячи исключение тут женский female
+
+				printWordInDeclination(array + 6, "миллион", "миллиона", "миллионов");
+			}
+			std::wcout << unitOfhundrends[*(array + 5)] << " ";
+			if (*(array + 4) == 1)
+			{
+				std::wcout << OnlyTens[*(array + 3)] << " ";
+				std::wcout << "тысяч" << " ";
+			}
+			else
+			{
+				std::wcout << unitOfTens[*(array + 4)] << " ";
+
+				std::wcout << unitOfOnesFemale[*(array + 3)] << " ";//только тысячи исключение тут женский female
+
+				printWordInDeclination(array + 3, "тысяча", "тысячи", "тысяч");
+			}
+			std::wcout << unitOfhundrends[*(array + 2)] << " ";
+			if (*(array + 1) == 1)
+			{
+				std::wcout << OnlyTens[*(array + 0)] << " ";
+				std::wcout << "рублей" << " ";
+			}
+			else
+			{
+				std::wcout << unitOfTens[*(array + 1)] << " " << unitOfOnes[*(array + 0)] << " ";
+				printWordInDeclination(array, "рубль", "рубля", "рублей");
+			}
+			break;
+		}
+			
+    }
+}
+
+void printWordInDeclination(int* array, const std::string& formOne, 
+	const std::string& formTwo, const std::string& formTree)
+{
+	switch (*array)
+	{
+	case 0:
+	{
+		std::cout << formTree << " ";
+		break;
+	}
+	case 1:
+	{
+		std::cout << formOne << " ";
+		break;
+	}
+	case 2:
+	{
+		std::cout << formTwo << " ";
+		break;
+	}
+	case 3:
+	{
+		std::cout << formTwo << " ";
+		break;
+	}
+	case 4:
+	{
+		std::cout << formTwo << " ";
+		break;
+	}
+	default:
+	{
+	    std::cout << formTree << " ";
+		break;
+	}
+	}
+}
+
+bool isContinue()
+{
+	while (true)
+	{
+		std::cout << '\n' << "Enter 'y' to continue or 'n' to stop: ";
+
+		char userResult{};
+
+		std::cin >> userResult;
+
+		if (userResult == 'y' || userResult == 'Y')
+			return true;
+		else if (userResult == 'n' || userResult == 'N')
+			return false;
+		else
+			std::cout << "Invalid input! Please enter 'y' or 'n'.\n";
+	}
+}
